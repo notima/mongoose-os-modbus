@@ -67,10 +67,7 @@ struct modbus_response modbus_parse_response(char* raw) {
 
     uint16_t calculatedCrc = mod_rtu_crc(raw, response.dataLength + 3);
     uint16_t receivedCrc = raw[response.dataLength + 4] << 8 | raw[response.dataLength + 3];
-
-    if(calculatedCrc == receivedCrc){
-        response.valid = true;
-    }
+    response.valid = calculatedCrc == receivedCrc;
 
     return response;
 }
