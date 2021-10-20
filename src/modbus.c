@@ -1,5 +1,4 @@
 #include "modbus.h"
-#include <stdbool.h>
 
 uint16_t mod_rtu_crc(char buf[], int len)
 {
@@ -65,6 +64,14 @@ struct modbus_response modbus_parse_response(char* raw) {
     response.functionCode = raw[1];
     response.dataLength = raw[2];
     response.data = &raw[3];
+
+    uint16_t calculatedCrc = mod_rtu_crc(raw, response.dataLength + 3);
+    uint16_t receivedCrc = raw[response.dataLength + 4] << 8 | raw[response.dataLength + 3];
+
+    if(calculatedCrc == receivedCrc){
+        response.valid = true;
+    }
+
     return response;
 }
 

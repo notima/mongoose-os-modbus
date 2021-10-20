@@ -1,4 +1,5 @@
 #include "stdint.h"
+#include "stdbool.h"
 
 /**
  * Protocol Data Unit
@@ -44,6 +45,7 @@ struct modbus_rtu_request {
  * modbus rtu and modbus tcp.
  */
 struct modbus_response {
+    bool valid;
     struct modbus_tcp_mbap mbap;
     uint8_t slaveAddress;
     uint8_t functionCode;
