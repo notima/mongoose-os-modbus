@@ -59,6 +59,15 @@ struct modbus_pdu modbus_read_analog_input(uint16_t addrBegin, uint16_t numOfReg
     return pdu;
 }
 
+struct modbus_response modbus_parse_response(char* raw) {
+    struct modbus_response response;
+    response.slaveAddress = raw[0];
+    response.functionCode = raw[1];
+    response.dataLength = raw[2];
+    response.data = &raw[3];
+    return response;
+}
+
 bool mgos_modbus_init(void) {
     return true;
 }

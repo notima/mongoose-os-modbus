@@ -40,6 +40,18 @@ struct modbus_rtu_request {
 };
 
 /**
+ * A response structure compatible with both
+ * modbus rtu and modbus tcp.
+ */
+struct modbus_response {
+    struct modbus_tcp_mbap mbap;
+    uint8_t slaveAddress;
+    uint8_t functionCode;
+    uint8_t dataLength;
+    char* data;
+};
+
+/**
  * Get the raw bytes of a modbus tcp request
  * @param requestBuffer Where to write the bytes.
  * Make sure enough memory is allocated at this 
@@ -64,3 +76,5 @@ struct modbus_pdu modbus_read_discrete_input(uint16_t addrBegin, uint16_t numOfR
 struct modbus_pdu modbus_read_analog_output(uint16_t addrBegin, uint16_t numOfRegisters);
 
 struct modbus_pdu modbus_read_analog_input(uint16_t addrBegin, uint16_t numOfRegisters);
+
+struct modbus_response modbus_parse_response(char* raw);
