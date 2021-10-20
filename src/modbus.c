@@ -50,6 +50,14 @@ void modbus_get_raw_rtu_request(char* requestBuffer, struct modbus_rtu_request r
     requestBuffer[7] = crc >> 8;
 }
 
+struct modbus_pdu modbus_read_analog_output(uint16_t addrBegin, uint16_t numOfRegisters) {
+    struct modbus_pdu pdu;
+    pdu.functionCode = 3;
+    pdu.addrBegin = addrBegin;
+    pdu.numOfRegisters = numOfRegisters;
+    return pdu;
+}
+
 struct modbus_pdu modbus_read_analog_input(uint16_t addrBegin, uint16_t numOfRegisters) {
     struct modbus_pdu pdu;
     pdu.functionCode = 4;
