@@ -27,7 +27,7 @@ The following pdu creation methods exists:
 
 Get the bytes to transmit to a modbus device:
 
-    char requestBuffer[8];
+    unsigned char requestBuffer[8];
     modbus_get_raw_rtu_request(requestBuffer, request);
 
 The content of `requestBuffer` will be `01 04 00 56 00 02 91 DB`.

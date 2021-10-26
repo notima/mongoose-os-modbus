@@ -20,66 +20,66 @@ uint16_t mod_rtu_crc(char buf[], int len)
   return crc;  
 }
 
-void modbus_get_raw_tcp_request(char* requestBuffer, struct modbus_tcp_request request) {
-    requestBuffer[0] = request.mbap.transactionId >> 8;
-    requestBuffer[1] = request.mbap.transactionId;
-    requestBuffer[2] = request.mbap.protocolId >> 8;
-    requestBuffer[3] = request.mbap.protocolId;
-    requestBuffer[4] = request.mbap.messageLength >> 8;
-    requestBuffer[5] = request.mbap.messageLength;
-    requestBuffer[6] = request.mbap.unitId;
+void modbus_get_raw_tcp_request(unsigned char* requestBuffer, struct modbus_tcp_request request) {
+  requestBuffer[0] = request.mbap.transactionId >> 8;
+  requestBuffer[1] = request.mbap.transactionId;
+  requestBuffer[2] = request.mbap.protocolId >> 8;
+  requestBuffer[3] = request.mbap.protocolId;
+  requestBuffer[4] = request.mbap.messageLength >> 8;
+  requestBuffer[5] = request.mbap.messageLength;
+  requestBuffer[6] = request.mbap.unitId;
 
-    requestBuffer[7] = request.pdu.functionCode;
-    requestBuffer[8] = request.pdu.addrBegin >> 8;
-    requestBuffer[9] = request.pdu.addrBegin;
-    requestBuffer[10] = request.pdu.numOfRegisters >> 8;
-    requestBuffer[11] = request.pdu.numOfRegisters;
+  requestBuffer[7] = request.pdu.functionCode;
+  requestBuffer[8] = request.pdu.addrBegin >> 8;
+  requestBuffer[9] = request.pdu.addrBegin;
+  requestBuffer[10] = request.pdu.numOfRegisters >> 8;
+  requestBuffer[11] = request.pdu.numOfRegisters;
 }
 
-void modbus_get_raw_rtu_request(char* requestBuffer, struct modbus_rtu_request request) {
-    requestBuffer[0] = request.slaveAddress;
-    requestBuffer[1] = request.pdu.functionCode;
-    requestBuffer[2] = request.pdu.addrBegin >> 8;
-    requestBuffer[3] = request.pdu.addrBegin;
-    requestBuffer[4] = request.pdu.numOfRegisters >> 8;
-    requestBuffer[5] = request.pdu.numOfRegisters;
+void modbus_get_raw_rtu_request(unsigned char* requestBuffer, struct modbus_rtu_request request) {
+  requestBuffer[0] = request.slaveAddress;
+  requestBuffer[1] = request.pdu.functionCode;
+  requestBuffer[2] = request.pdu.addrBegin >> 8;
+  requestBuffer[3] = request.pdu.addrBegin;
+  requestBuffer[4] = request.pdu.numOfRegisters >> 8;
+  requestBuffer[5] = request.pdu.numOfRegisters;
 
-    uint16_t crc = mod_rtu_crc(requestBuffer, 6);
+  uint16_t crc = mod_rtu_crc(requestBuffer, 6);
 
-    requestBuffer[6] = crc;
-    requestBuffer[7] = crc >> 8;
+  requestBuffer[6] = crc;
+  requestBuffer[7] = crc >> 8;
 }
 
 struct modbus_pdu modbus_read_analog_output(uint16_t addrBegin, uint16_t numOfRegisters) {
-    struct modbus_pdu pdu;
-    pdu.functionCode = 3;
-    pdu.addrBegin = addrBegin;
-    pdu.numOfRegisters = numOfRegisters;
-    return pdu;
+  struct modbus_pdu pdu;
+  pdu.functionCode = 3;
+  pdu.addrBegin = addrBegin;
+  pdu.numOfRegisters = numOfRegisters;
+  return pdu;
 }
 
 struct modbus_pdu modbus_read_analog_input(uint16_t addrBegin, uint16_t numOfRegisters) {
-    struct modbus_pdu pdu;
-    pdu.functionCode = 4;
-    pdu.addrBegin = addrBegin;
-    pdu.numOfRegisters = numOfRegisters;
-    return pdu;
+  struct modbus_pdu pdu;
+  pdu.functionCode = 4;
+  pdu.addrBegin = addrBegin;
+  pdu.numOfRegisters = numOfRegisters;
+  return pdu;
 }
 
 struct modbus_response modbus_parse_response(char* raw) {
-    struct modbus_response response;
-    response.slaveAddress = raw[0];
-    response.functionCode = raw[1];
-    response.dataLength = raw[2];
-    response.data = &raw[3];
+  struct modbus_response response;
+  response.slaveAddress = raw[0];
+  response.functionCode = raw[1];
+  response.dataLength = raw[2];
+  response.data = &raw[3];
 
-    uint16_t calculatedCrc = mod_rtu_crc(raw, response.dataLength + 3);
-    uint16_t receivedCrc = raw[response.dataLength + 4] << 8 | raw[response.dataLength + 3];
-    response.valid = calculatedCrc == receivedCrc;
+  uint16_t calculatedCrc = mod_rtu_crc(raw, response.dataLength + 3);
+  uint16_t receivedCrc = raw[response.dataLength + 4] << 8 | raw[response.dataLength + 3];
+  response.valid = calculatedCrc == receivedCrc;
 
-    return response;
+  return response;
 }
 
 bool mgos_modbus_init(void) {
-    return true;
+  return true;
 }

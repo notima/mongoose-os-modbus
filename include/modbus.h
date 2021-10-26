@@ -60,7 +60,7 @@ struct modbus_response {
  * address!
  * @param request The request
  */
-void modbus_get_raw_tcp_request(char* requestBuffer, struct modbus_tcp_request request);
+void modbus_get_raw_tcp_request(unsigned char* requestBuffer, struct modbus_tcp_request request);
 
 /**
  * Get the raw bytes of a modbus rtu request
@@ -69,7 +69,7 @@ void modbus_get_raw_tcp_request(char* requestBuffer, struct modbus_tcp_request r
  * address!
  * @param request The request
  */
-void modbus_get_raw_rtu_request(char* requestBuffer, struct modbus_rtu_request request);
+void modbus_get_raw_rtu_request(unsigned char* requestBuffer, struct modbus_rtu_request request);
 
 struct modbus_pdu modbus_read_discrete_output(uint16_t addrBegin, uint16_t numOfRegisters);
 
