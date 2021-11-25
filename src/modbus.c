@@ -1,4 +1,6 @@
 #include "modbus.h"
+#include "stdlib.h"
+#include "string.h"
 
 uint16_t mod_rtu_crc(char buf[], int len)
 {
@@ -71,7 +73,8 @@ struct modbus_response modbus_parse_response(char* raw) {
   response.slaveAddress = raw[0];
   response.functionCode = raw[1];
   response.dataLength = raw[2];
-  response.data = &raw[3];
+  response.data = malloc(response.dataLength);
+  memcpy(response.data, raw + 3, response.dataLength);
 
   uint16_t calculatedCrc = mod_rtu_crc(raw, response.dataLength + 3);
   uint16_t receivedCrc = raw[response.dataLength + 4] << 8 | raw[response.dataLength + 3];
