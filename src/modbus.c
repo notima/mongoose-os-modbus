@@ -2,7 +2,7 @@
 #include "stdlib.h"
 #include "string.h"
 
-uint16_t mod_rtu_crc(char buf[], int len)
+uint16_t mod_rtu_crc(unsigned char buf[], int len)
 {
   uint16_t crc = 0xFFFF;
   
@@ -68,7 +68,7 @@ struct modbus_pdu modbus_read_analog_input(uint16_t addrBegin, uint16_t numOfReg
   return pdu;
 }
 
-struct modbus_response modbus_parse_response(char* raw) {
+struct modbus_response modbus_parse_response(unsigned char* raw) {
   struct modbus_response response;
   response.slaveAddress = raw[0];
   response.functionCode = raw[1];

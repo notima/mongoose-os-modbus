@@ -86,4 +86,4 @@ struct modbus_pdu modbus_read_analog_input(uint16_t addrBegin, uint16_t numOfReg
  * @param raw data received from a modbus device
  * @return struct modbus_response 
  */
-struct modbus_response modbus_parse_response(char* raw);
+struct modbus_response modbus_parse_response(unsigned char* raw);
